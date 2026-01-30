@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bookmarks</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="A portable, dependency-free bookmark hub with theming and quick category browsing."
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="app__sidebar sidebar">
+        <div class="sidebar__header">
+          <button
+            class="theme-switch"
+            type="button"
+            aria-pressed="false"
+            aria-label="Toggle dark mode"
+          >
+            <span class="theme-switch__label theme-switch__label--day">Day</span>
+            <span class="theme-switch__label theme-switch__label--night">Night</span>
+          </button>
+
+          <fieldset class="theme-picker">
+            <legend class="sr-only">Accent color</legend>
+            <div class="theme-picker__options">
+              <input
+                class="theme-picker__input"
+                type="radio"
+                name="theme-radio"
+                id="theme-red"
+                value="red"
+                checked
+              />
+              <label class="theme-picker__label theme-picker__label--red" for="theme-red">Red</label>
+
+              <input
+                class="theme-picker__input"
+                type="radio"
+                name="theme-radio"
+                id="theme-green"
+                value="green"
+              />
+              <label class="theme-picker__label theme-picker__label--green" for="theme-green">Green</label>
+
+              <input
+                class="theme-picker__input"
+                type="radio"
+                name="theme-radio"
+                id="theme-blue"
+                value="blue"
+              />
+              <label class="theme-picker__label theme-picker__label--blue" for="theme-blue">Blue</label>
+
+              <input
+                class="theme-picker__input"
+                type="radio"
+                name="theme-radio"
+                id="theme-yellow"
+                value="yellow"
+              />
+              <label class="theme-picker__label theme-picker__label--yellow" for="theme-yellow">Yellow</label>
+
+              <input
+                class="theme-picker__input"
+                type="radio"
+                name="theme-radio"
+                id="theme-purple"
+                value="purple"
+              />
+              <label class="theme-picker__label theme-picker__label--purple" for="theme-purple">Purple</label>
+
+              <input
+                class="theme-picker__input"
+                type="radio"
+                name="theme-radio"
+                id="theme-orange"
+                value="orange"
+              />
+              <label class="theme-picker__label theme-picker__label--orange" for="theme-orange">Orange</label>
+            </div>
+            <div class="theme-picker__glider"></div>
+            <div class="theme-picker__glider-hover"></div>
+          </fieldset>
+        </div>
+
+        <nav id="categoryNav" class="nav" aria-label="Bookmark categories"></nav>
+      </aside>
+
+      <main class="app__content content">
+        <div class="content__inner">
+          <header class="content__header">
+            <div>
+              <h1 id="pageTitle">Bookmarks</h1>
+              <p>Select a category for fast access to your go-to sites.</p>
+            </div>
+
+            <div class="content__controls">
+              <label class="sr-only" for="searchInput">Search links</label>
+              <input
+                id="searchInput"
+                class="search__input"
+                type="search"
+                placeholder="Search links…"
+                autocomplete="off"
+              />
+              <div id="resultMeta" class="content__meta" aria-live="polite"></div>
+            </div>
+          </header>
+
+          <section id="linkGrid" class="card-grid" aria-label="Links"></section>
+        </div>
+      </main>
+    </div>
+
+    <template id="card-template">
+      <article class="card">
+        <div class="card__title">Card Title</div>
+        <div class="card__body">Card Body</div>
+        <ul class="card__tags"></ul>
+      </article>
+    </template>
+
+    <template id="nav-button-template">
+      <button class="nav__item" type="button">Nav Button Label</button>
+    </template>
+
+    <template id="tag-template">
+      <li class="card__tag">
+        <button class="tag" type="button">
+          <span class="tag__label">Tag</span>
+        </button>
+      </li>
+    </template>
+
+    <script src="bookmarks-data.js"></script>
+    <script src="bookmarks.js"></script>
+  </body>
+</html>
