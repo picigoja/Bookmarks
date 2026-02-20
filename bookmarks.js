@@ -19,7 +19,6 @@ const COLOR_MODE = {
 
 const elements = {
   groupNav: document.getElementById("groupNav"),
-  sidebarHeader: document.querySelector(".sidebar-header"),
   linkGrid: document.getElementById("linkGrid"),
   searchInput: document.getElementById("searchInput"),
   resultMeta: document.getElementById("resultMeta"),
@@ -28,6 +27,7 @@ const elements = {
   colorModeSwitch: document.getElementById("colorModeSwitch"),
   themeSliders: null
 };
+
 
 const templates = {
   cardTemplate: document.getElementById("cardTemplate"),
@@ -297,7 +297,19 @@ function onCustomSliderInput() {
 function renderGroupNav() {
   if (!elements.groupNav || !templates.navButtonTemplate) return;
 
-  elements.groupNav.innerHTML = "";
+  // The groupNav gliders now live *inside* the <nav>. Don't wipe them out.
+  const activeGlider =
+    elements.groupNav.querySelector("#groupNavGlider") ||
+    document.getElementById("groupNavGlider");
+  const hoverGlider =
+    elements.groupNav.querySelector("#groupNavGliderHover") ||
+    document.getElementById("groupNavGliderHover");
+
+  // Clear only nav options, preserving gliders.
+  elements.groupNav.replaceChildren(
+    ...[activeGlider, hoverGlider].filter(Boolean)
+  );
+
   navHoverItem = null;
 
   const groupCounts = {};
@@ -319,7 +331,14 @@ function renderGroupNav() {
     });
 
   updateNavActiveState(true);
+
+  // Ensure gliders align after DOM updates.
+  requestAnimationFrame(() => {
+    updateNavGlider();
+    updateNavHoverGlider();
+  });
 }
+
 
 function createNavButton(label, count, groupKey) {
   const fragment = templates.navButtonTemplate.content.cloneNode(true);
@@ -631,7 +650,7 @@ function renderLinks(list) {
 
 
 function updateNavGlider() {
-  if (!elements.groupNav || !elements.sidebarHeader) return;
+  if (!elements.groupNav) return;
 
   const glider = document.getElementById("groupNavGlider");
   if (!glider) return;
@@ -646,13 +665,11 @@ function updateNavGlider() {
     return;
   }
 
-  const containerRect = elements.sidebarHeader.getBoundingClientRect();
-  const buttonRect = activeButton.getBoundingClientRect();
-
-  const x = buttonRect.left - containerRect.left;
-  const y = buttonRect.top - containerRect.top;
-  const w = buttonRect.width;
-  const h = buttonRect.height;
+  // Gliders now live inside #groupNav, so we can measure relative to it.
+  const x = activeButton.offsetLeft;
+  const y = activeButton.offsetTop;
+  const w = activeButton.offsetWidth;
+  const h = activeButton.offsetHeight;
 
   glider.style.opacity = "1";
   glider.style.setProperty("--nav-glider-x", `${x}px`);
@@ -662,7 +679,7 @@ function updateNavGlider() {
 }
 
 function updateNavHoverGlider() {
-  if (!elements.groupNav || !elements.sidebarHeader) return;
+  if (!elements.groupNav) return;
 
   const glider = document.getElementById("groupNavGliderHover");
   if (!glider) return;
@@ -678,13 +695,10 @@ function updateNavHoverGlider() {
     return;
   }
 
-  const containerRect = elements.sidebarHeader.getBoundingClientRect();
-  const labelRect = navHoverItem.getBoundingClientRect();
-
-  const x = labelRect.left - containerRect.left;
-  const y = labelRect.top - containerRect.top;
-  const w = labelRect.width;
-  const h = labelRect.height;
+  const x = navHoverItem.offsetLeft;
+  const y = navHoverItem.offsetTop;
+  const w = navHoverItem.offsetWidth;
+  const h = navHoverItem.offsetHeight;
 
   glider.style.opacity = "1";
   glider.style.setProperty("--nav-glider-x", `${x}px`);
@@ -692,6 +706,7 @@ function updateNavHoverGlider() {
   glider.style.setProperty("--nav-glider-width", `${w}px`);
   glider.style.setProperty("--nav-glider-height", `${h}px`);
 }
+
 
 function initNavGlider() {
   if (!elements.groupNav) return;
