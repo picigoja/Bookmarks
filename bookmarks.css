@@ -42,11 +42,17 @@
   --z-index-base: 1;
   --z-index-active: 5;
   --z-index-sticky: 20;
+
   --glider-bg: rgba(0, 0, 0, 0.1);
+
+  /* Card hover shine (theme-aware; overridden in dark mode) */
+  --card-shine: rgba(255, 255, 255, 0.4);
 }
 
 :root.theme-dark {
   --bg-body: #121212;
+
+
   --bg-surface: rgba(30, 30, 30, var(--glass-opacity));
   --bg-surface-hover: rgba(50, 50, 50, 0.8);
   --border: rgba(255, 255, 255, 0.1);
@@ -59,6 +65,9 @@
 
   --switch-gradient: linear-gradient(135deg, var(--blob-night-start), var(--blob-night-end));
   --glider-bg: rgba(255, 255, 255, 0.1);
+
+  --card-shine: rgba(255, 255, 255, 0.12);
+
 }
 
 :root.accent-red {
@@ -68,6 +77,7 @@
 :root.accent-green {
   --theme-color: var(--color-green);
 }
+
 
 :root.accent-blue {
   --theme-color: var(--color-blue);
@@ -166,7 +176,7 @@ body {
 }
 
 .glider-ghost {
-  z-index: 0;
+  z-index: var(--z-index-base);
   opacity: 0;
 }
 
@@ -390,12 +400,11 @@ body {
 #themePickerGlider, #themePickerGliderHover { --x: var(--glider-x); --y: var(--glider-y); width: var(--glider-width); height: var(--glider-height); }
 #groupNavGlider, #groupNavGliderHover { --x: var(--nav-glider-x); --y: var(--nav-glider-y); width: var(--nav-glider-width); height: var(--nav-glider-height); }
 
-#themePickerGliderHover {
-  background: color-mix(in srgb, #808080 5%, transparent);
-  border: var(--border-width) solid color-mix(in srgb, #808080 15%, transparent);
-  box-shadow:
-    0 0 0 var(--border-width) color-mix(in srgb, #808080 45%, transparent),
-    0 0.5rem 1.125rem -0.875rem #808080;
+#themePickerGliderHover,
+#groupNavGliderHover {
+  background: color-mix(in srgb, var(--text-main) 5%, transparent);
+  border: var(--border-width) solid var(--border);
+  box-shadow: none;
 }
 
 /* --- Navigation --- */
@@ -407,17 +416,6 @@ body {
   border-radius: var(--border-radius-md);
   position: relative;
 }
-
-/* Keep nav text above the sibling gliders to avoid blurred label text */
-#groupNav {
-  z-index: 2;
-}
-
-#groupNavGlider,
-#groupNavGliderHover {
-  z-index: 1;
-}
-
 
 .nav-option {
   display: flex;
@@ -456,6 +454,7 @@ body {
 
 .nav-option.active {
   color: var(--text-main);
+  z-index: var(--z-index-active);
 }
 
 .nav-option.active::before {
@@ -468,16 +467,8 @@ body {
   outline-offset: 0.125rem;
 }
 
-#groupNavGliderHover {
-  background: color-mix(in srgb, var(--theme-color) 15%, transparent);
-  border: var(--border-width) solid color-mix(in srgb, var(--theme-color) 30%, transparent);
-  box-shadow:
-    0 0 0 var(--border-width) color-mix(in srgb, var(--theme-color) 60%, transparent),
-    0 0.5rem 1.125rem -0.875rem var(--theme-color);
-}
-
-
 .content-controls {
+
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -621,10 +612,11 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+    width: 100%;
   height: 100%;
-  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.4) 50%, transparent 70%);
+  background: linear-gradient(120deg, transparent 30%, var(--card-shine) 50%, transparent 70%);
   transform: translateX(-100%);
+
   transition: transform 0s;
   z-index: -1;
 }
