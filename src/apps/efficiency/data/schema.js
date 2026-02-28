@@ -1,0 +1,15 @@
+export const REQUIRED_COLUMNS = [
+  "REPAIR_ID",
+  "COMPUTER_SN",
+  "ERROR_CODE",
+  "DEBUG_TECH",
+  "REPAIR_TECH",
+  "CREATED",
+  "DEBUGGED",
+  "REPAIRED",
+  "FAIL_PN",
+  "PROPOSED_ACTION",
+  "REPAIR_ACTION",
+];
+
+export const WINDOWS_DAYS = [7, 14, 30];

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technician Efficiency & Quality Analytics</title>
+  <link rel="manifest" href="../manifest.json" />
+  <link rel="stylesheet" href="../css/common.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/efficiency.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+</head>
+<body>
+  <div class="ea-app">
+    <aside class="ea-sidebar surface-glass">
+      <a class="switch-link" href="../index.html">← Switch to Bookmarks</a>
+
+      <div id="dayNightContainer" class="surface-glass">
+        <button id="eaDayNightSwitch" class="switch-control day-night-switch" type="button" aria-pressed="false" aria-label="Toggle dark mode">
+          <span class="sw-lbl" data-sw-day>Day</span>
+          <span class="sw-lbl" data-sw-night>Night</span>
+        </button>
+      </div>
+
+      <fieldset id="eaThemePickerSet" class="surface-glass">
+        <legend class="sr-only">Accent color</legend>
+        <div class="ea-theme-options">
+          <input class="tp-input" type="radio" name="ea-theme-radio" id="eaThemeRed" value="#ff6b6b" checked /><label class="tp-input-lbl" for="eaThemeRed">Red</label>
+          <input class="tp-input" type="radio" name="ea-theme-radio" id="eaThemeGreen" value="#51cf66" /><label class="tp-input-lbl" for="eaThemeGreen">Green</label>
+          <input class="tp-input" type="radio" name="ea-theme-radio" id="eaThemeBlue" value="#339af0" /><label class="tp-input-lbl" for="eaThemeBlue">Blue</label>
+          <input class="tp-input" type="radio" name="ea-theme-radio" id="eaThemeYellow" value="#fcc419" /><label class="tp-input-lbl" for="eaThemeYellow">Yellow</label>
+          <input class="tp-input" type="radio" name="ea-theme-radio" id="eaThemePurple" value="#b197fc" /><label class="tp-input-lbl" for="eaThemePurple">Purple</label>
+          <input class="tp-input" type="radio" name="ea-theme-radio" id="eaThemeOrange" value="#ff922b" /><label class="tp-input-lbl" for="eaThemeOrange">Orange</label>
+        </div>
+      </fieldset>
+    </aside>
+
+    <div class="ea-content">
+      <header class="page-header surface-glass">
+        <div>
+          <h1>Technician Efficiency & Quality Analytics</h1>
+          <p class="muted">Descriptive analytics for speed, recurrence, and recommendation adherence.</p>
+        </div>
+        <button id="btn-reset" class="btn hidden" type="button">Reset</button>
+      </header>
+
+      <main class="page-main">
+        <section id="upload-container" class="upload-view surface-glass">
+          <h2>Upload FAIL Event CSV</h2>
+          <div id="drop-zone" class="drop-zone">
+            <p>Drag & drop CSV here</p>
+            <p class="muted">or</p>
+            <label class="btn" for="file-input">Select File</label>
+            <input id="file-input" type="file" accept=".csv,text/csv" />
+          </div>
+          <div id="error-message" class="error-message" aria-live="assertive"></div>
+        </section>
+
+        <section id="dashboard-container" class="dashboard hidden">
+          <div class="controls-grid surface-glass">
+            <label>Window (days)<select id="select-window"><option value="7" selected>7</option><option value="14">14</option><option value="30">30</option></select></label>
+            <label>Min sample N<input id="input-min-sample-n" type="number" value="30" min="1" /></label>
+            <label>Top N<input id="input-top-n" type="number" value="10" min="1" /></label>
+            <label class="inline-check"><input id="chk-exclude-role-overlap" type="checkbox" />Exclude role overlap</label>
+            <label class="inline-check"><input id="chk-exclude-neg-durations" type="checkbox" checked />Exclude negative durations</label>
+          </div>
+
+          <div class="kpi-grid">
+            <article class="kpi-card surface-glass"><h3>Total Events</h3><p id="kpi-total-events">-</p></article>
+            <article class="kpi-card surface-glass"><h3>Data End</h3><p id="kpi-data-end">-</p></article>
+            <article class="kpi-card surface-glass"><h3>Median Cycle (min)</h3><p id="kpi-median-cycle">-</p></article>
+            <article class="kpi-card surface-glass"><h3>Repeat Rate</h3><p id="kpi-repeat-rate">-</p></article>
+            <article class="kpi-card surface-glass"><h3>Same-Error Repeat Rate</h3><p id="kpi-same-error-repeat-rate">-</p></article>
+            <article class="kpi-card surface-glass"><h3>FPY</h3><p id="kpi-fpy">-</p></article>
+          </div>
+
+          <div class="data-quality surface-glass" id="data-quality"></div>
+
+          <div class="chart-grid">
+            <div class="chart-panel surface-glass"><h3>Debug Speed</h3><canvas id="chart-debug-speed"></canvas></div>
+            <div class="chart-panel surface-glass"><h3>Repair Speed</h3><canvas id="chart-repair-speed"></canvas></div>
+            <div class="chart-panel surface-glass"><h3>Technician Quality</h3><canvas id="chart-tech-quality"></canvas></div>
+            <div class="chart-panel surface-glass"><h3>Top Error Codes</h3><canvas id="chart-top-errors"></canvas></div>
+            <div class="chart-panel surface-glass"><h3>Top Rework Error Codes</h3><canvas id="chart-top-rework"></canvas></div>
+          </div>
+
+          <div class="table-grid">
+            <section class="table-panel surface-glass"><h3>Debug Tech Summary</h3><table id="table-debugger-summary"></table></section>
+            <section class="table-panel surface-glass"><h3>Repair Tech Summary</h3><table id="table-repairtech-summary"></table></section>
+            <section class="table-panel surface-glass"><h3>Error Code Summary</h3><table id="table-errorcode-summary"></table></section>
+            <section class="table-panel surface-glass"><h3>Recurrence Risks</h3><table id="table-recurrence-risks"></table></section>
+          </div>
+
+          <section class="surface-glass heatmap-panel">
+            <h3>Override Matrix (Proposed × Repair)</h3>
+            <div id="override-heatmap"></div>
+          </section>
+
+          <section id="analysis-caveats" class="surface-glass caveats">
+            <ul>
+              <li>All time metrics are elapsed (queue + touch time).</li>
+              <li>Recurrence metrics use right-censoring eligibility; recent repairs may be ineligible.</li>
+            </ul>
+          </section>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="loading-overlay hidden" id="loading-overlay" role="status" aria-live="polite">
+    <div class="loader-box surface-glass">
+      <p>Processing CSV…</p>
+      <div class="progress"><div id="loading-progress" class="progress-bar"></div></div>
+    </div>
+  </div>
+
+  <script src="../dist/efficiency.js"></script>
+</body>
+</html>

@@ -1,168 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="A portable, dependency-free bookmark hub with theming and quick group browsing." />
+  <title>Bookmarks</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="stylesheet" href="./css/common.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/bookmarks.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a class="switch-link" href="./Efficiency%20Analysis/index.html">Switch to Efficiency Analysis →</a>
 
-  <head>
-    <meta charset="UTF-8" />
-    <title>Bookmarks</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta
-      name="description"
-      content="A portable, dependency-free bookmark hub with theming and quick group browsing."
-    />
-    <link rel="stylesheet" href="bookmarks.css" />
-  </head>
-
-  <body>
-    <div class="app">
-      <aside class="sidebar">
-        <div class="sidebar-header">
-          <div id="dayNightContainer" class="surface-glass">
-            <button 
-                id="dayNightSwitch"
-                class="switch-control"
-                type="button"
-                aria-pressed="false"
-                aria-label="Toggle dark mode"
-              >
-                <span id="sw-lbl-day" class="sw-lbl">Day</span>
-                <span id="sw-lbl-night" class="sw-lbl">Night</span>
-            </button>
-          </div>
-
-          <!-- Color mode: Preset vs Custom -->
-          <div id="colorModeContainer" class="surface-glass">
-            <button
-              id="colorModeSwitch"
-              class="switch-control"
-              type="button"
-              aria-pressed="false"
-              aria-label="Switch between preset and custom colors"
-            >
-              <span id="sw-lbl-preset" class="sw-lbl">Preset</span>
-              <span id="sw-lbl-custom" class="sw-lbl">Custom</span>
-            </button>
-          </div>
-
-          <fieldset id="themePickerSet" class="surface-glass">
-            <legend class="sr-only">Accent color</legend>
-            <div id="themePickerOptions">
-              <input
-                class="tp-input"
-                type="radio"
-                name="theme-radio"
-                id="themeRed"
-                value="red"
-                checked
-              />
-              <label id="themeRedLabel" class="tp-input-lbl" for="themeRed">Red</label>
-
-              <input
-                class="tp-input"
-                type="radio"
-                name="theme-radio"
-                id="themeGreen"
-                value="green"
-              />
-              <label id="themeGreenLabel" class="tp-input-lbl" for="themeGreen">Green</label>
-
-              <input
-                class="tp-input"
-                type="radio"
-                name="theme-radio"
-                id="themeBlue"
-                value="blue"
-              />
-              <label id="themeBlueLabel" class="tp-input-lbl" for="themeBlue">Blue</label>
-
-              <input
-                class="tp-input"
-                type="radio"
-                name="theme-radio"
-                id="themeYellow"
-                value="yellow"
-              />
-              <label id="themeYellowLabel" class="tp-input-lbl" for="themeYellow">Yellow</label>
-
-              <input
-                class="tp-input"
-                type="radio"
-                name="theme-radio"
-                id="themePurple"
-                value="purple"
-              />
-              <label id="themePurpleLabel" class="tp-input-lbl" for="themePurple">Purple</label>
-
-              <input
-                class="tp-input"
-                type="radio"
-                name="theme-radio"
-                id="themeOrange"
-                value="orange"
-              />
-              <label id="themeOrangeLabel" class="tp-input-lbl" for="themeOrange">Orange</label>
-            </div>
-            <div id="themePickerGlider" class="glider-item glider-glass"></div>
-            <div id="themePickerGliderHover" class="glider-item glider-ghost"></div>
-
-            <!-- Custom RGB sliders (hidden unless custom mode active) -->
-            <div id="colorMixerContainer" class="surface-glass" aria-hidden="true">
-              <label class="sr-only" for="colorSliderRed">Red</label>
-              <input type="range" min="0" max="255" value="50" class="theme-slider" id="colorSliderRed" />
-
-              <label class="sr-only" for="colorSliderGreen">Green</label>
-              <input type="range" min="0" max="255" value="50" class="theme-slider" id="colorSliderGreen" />
-
-              <label class="sr-only" for="colorSliderBlue">Blue</label>
-              <input type="range" min="0" max="255" value="50" class="theme-slider" id="colorSliderBlue" />
-            </div>
-          </fieldset>
-
-          <nav id="groupNav" class="nav surface-glass" aria-label="Bookmark groups">
-            <div id="groupNavGlider" class="glider-item glider-glass"></div>
-            <div id="groupNavGliderHover" class="glider-item glider-ghost"></div>
-          </nav>
+        <div id="dayNightContainer" class="surface-glass">
+          <button id="dayNightSwitch" class="switch-control day-night-switch" type="button" aria-pressed="false" aria-label="Toggle dark mode">
+            <span id="sw-lbl-day" class="sw-lbl" data-sw-day>Day</span>
+            <span id="sw-lbl-night" class="sw-lbl" data-sw-night>Night</span>
+          </button>
         </div>
-      </aside>
 
-      <main id="appContent" class="content">
-        <header id="appHeader" class="content-header">
-            <div id="pageTitle">
-              <h1>Bookmarks</h1>
-              <p>Select a group for fast access to your go-to sites.</p>
-            </div>
+        <div id="colorModeContainer" class="surface-glass">
+          <button id="colorModeSwitch" class="switch-control" type="button" aria-pressed="false" aria-label="Switch between preset and custom colors">
+            <span id="sw-lbl-preset" class="sw-lbl">Preset</span>
+            <span id="sw-lbl-custom" class="sw-lbl">Custom</span>
+          </button>
+        </div>
 
-            <div id="searchContainer" class="content-controls">
-              <label class="sr-only" for="searchInput">Search links</label>
-              <input
-                id="searchInput"
-                class="search-bar surface-glass"
-                type="search"
-                placeholder="Search links…"
-                autocomplete="off"
-              />
-              <div id="resultMeta" class="content-meta" aria-live="polite"></div>
+        <fieldset id="themePickerSet" class="surface-glass">
+          <legend class="sr-only">Accent color</legend>
+          <div id="themePickerOptions">
+            <input class="tp-input" type="radio" name="theme-radio" id="themeRed" value="red" checked /><label class="tp-input-lbl" for="themeRed">Red</label>
+            <input class="tp-input" type="radio" name="theme-radio" id="themeGreen" value="green" /><label class="tp-input-lbl" for="themeGreen">Green</label>
+            <input class="tp-input" type="radio" name="theme-radio" id="themeBlue" value="blue" /><label class="tp-input-lbl" for="themeBlue">Blue</label>
+            <input class="tp-input" type="radio" name="theme-radio" id="themeYellow" value="yellow" /><label class="tp-input-lbl" for="themeYellow">Yellow</label>
+            <input class="tp-input" type="radio" name="theme-radio" id="themePurple" value="purple" /><label class="tp-input-lbl" for="themePurple">Purple</label>
+            <input class="tp-input" type="radio" name="theme-radio" id="themeOrange" value="orange" /><label class="tp-input-lbl" for="themeOrange">Orange</label>
           </div>
-        </header>
+          <div id="themePickerGlider" class="glider-item glider-glass"></div>
+          <div id="themePickerGliderHover" class="glider-item glider-ghost"></div>
 
-        <section id="linkGrid" class="card-grid" aria-label="Links"></section>
-      </main>
-    </div>
+          <div id="colorMixerContainer" class="surface-glass" aria-hidden="true">
+            <label class="sr-only" for="colorSliderRed">Red</label><input type="range" min="0" max="255" value="50" class="theme-slider" id="colorSliderRed" />
+            <label class="sr-only" for="colorSliderGreen">Green</label><input type="range" min="0" max="255" value="50" class="theme-slider" id="colorSliderGreen" />
+            <label class="sr-only" for="colorSliderBlue">Blue</label><input type="range" min="0" max="255" value="50" class="theme-slider" id="colorSliderBlue" />
+          </div>
+        </fieldset>
 
-    <template id="cardTemplate">
-      <article class="card">
-        <div class="card-title">Card Title</div>
-        <div class="card-body">Card Body</div>
-      </article>
-    </template>
+        <nav id="groupNav" class="nav surface-glass" aria-label="Bookmark groups">
+          <div id="groupNavGlider" class="glider-item glider-glass"></div>
+          <div id="groupNavGliderHover" class="glider-item glider-ghost"></div>
+        </nav>
+      </div>
+    </aside>
 
-    <template id="groupOptionTemplate">
-      <button class="nav-option" type="button">
-        <span class="group-lbl">Nav Button Label</span>
-      </button>
-    </template>
+    <main id="appContent" class="content">
+      <header id="appHeader" class="content-header">
+        <div id="pageTitle">
+          <h1>Bookmarks</h1>
+          <p>Select a group for fast access to your go-to sites.</p>
+        </div>
 
+        <div id="searchContainer" class="content-controls">
+          <label class="sr-only" for="searchInput">Search links</label>
+          <input id="searchInput" class="search-bar surface-glass" type="search" placeholder="Search links…" autocomplete="off" />
+          <div id="resultMeta" class="content-meta" aria-live="polite"></div>
+        </div>
+      </header>
 
-    <script src="bookmarks-data.js"></script>
-    <script src="bookmarks.js"></script>
-  </body>
+      <section id="linkGrid" class="card-grid" aria-label="Links"></section>
+    </main>
+  </div>
+
+  <template id="cardTemplate">
+    <article class="card">
+      <div class="card-title"></div>
+      <div class="card-body"></div>
+    </article>
+  </template>
+
+  <template id="groupOptionTemplate">
+    <button class="nav-option" type="button"><span class="group-lbl"></span></button>
+  </template>
+
+  <script src="./dist/bookmarks.js"></script>
+</body>
 </html>
